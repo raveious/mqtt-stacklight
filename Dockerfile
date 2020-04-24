@@ -2,12 +2,13 @@ FROM centos:7.6.1810
 
 # Setup some of out environment variables for the toolchain
 ENV IDF_PATH=/esp-idf \
-    PATH=$PATH:/xtensa-esp32-elf/bin:/esp-idf/tools
+    PATH=$PATH:/xtensa-lx106-elf/bin:/esp-idf/tools
 
 # Pull in the archive of the toolchain. Adding it from context, instead of using a URL, to more easily version the toolchain.
-ADD esp32-elf-linux64-toolchain.tar.gz /
+ADD xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz /
 
 # Install some pre-req packages, including some things from EPEL like cmake 3+ and pip
+# Also need newer version of cmake to be used in the place of the older version of cmake.
 RUN yum install -y epel-release && \
     yum update -y && \
     yum install -y \
@@ -19,27 +20,19 @@ RUN yum install -y epel-release && \
         gcc-c++ \
         gdb \
         gdb-gdbserver \
-        openocd \
-        wget \
         ncurses-devel \
         flex \
         bison \
         gperf \
-        ninja-build \
-        ccache \
-        screen \
         unzip \
-        java-1.8.0-openjdk \
-        java-1.8.0-openjdk-devel \
         python \
         python-pip && \
-    yum clean all
-
-# Need newer version of cmake to be used in the place of the older version of cmake.
-RUN ln -sv /usr/bin/cmake3 /usr/bin/cmake
+    yum clean all && \
+    ln -sv /usr/bin/cmake3 /usr/bin/cmake
 
 # Cloning IDF and installing required packages for the IDF
-RUN git clone --recursive --depth 1 --branch v3.3-beta3 https://github.com/espressif/esp-idf.git /esp-idf && \
+RUN git clone --recursive --depth 1 --branch v3.3-rc1 https://github.com/espressif/ESP8266_RTOS_SDK.git /esp-idf && \
+    find /esp-idf/tools -type d -exec chmod a+w {} + && \
     pip install --upgrade pip && \
     pip install -r /esp-idf/requirements.txt
 
