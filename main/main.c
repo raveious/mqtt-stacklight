@@ -40,7 +40,7 @@ static esp_err_t i2c_init (void) {
 static void i2c_task(void* arg) {
     ESP_ERROR_CHECK(i2c_init());
 
-    ESP_ERROR_CHECK(mcp23008_init(MCP23008_BASE_ADDR, 0x10));
+    ESP_ERROR_CHECK(mcp23008_init(DEVICE_MASTER_NUM, MCP23008_BASE_ADDR, 0x10));
 
     while(1) {
 
