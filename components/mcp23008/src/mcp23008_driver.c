@@ -76,11 +76,11 @@ esp_err_t mcp23008_write_register(mcp23008_register_t reg, uint8_t buff) {
 }
 
 esp_err_t mcp23008_read_input(uint8_t* inputs) {
-    return ESP_OK;
+    return mcp23008_read_register(GPIO_REG, inputs);
 }
 
 esp_err_t mcp23008_write_output(uint8_t outputs) {
-    return ESP_OK;
+    return mcp23008_write_register(GPIO_REG, outputs);
 }
 
 esp_err_t mcp23008_init(i2c_port_t port, uint8_t addr, uint8_t io_dir) {

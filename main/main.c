@@ -25,10 +25,10 @@ static esp_err_t i2c_init (void) {
     config.mode = I2C_MODE_MASTER;
 
     config.sda_io_num = I2C_SDA_PIN;
-    config.sda_pullup_en = 1;
+    // config.sda_pullup_en = 1;
     
     config.scl_io_num = I2C_SCL_PIN;
-    config.scl_pullup_en = 1;
+    // config.scl_pullup_en = 1;
 
     // config.clk_stretch_tick = 300;
 
@@ -42,8 +42,15 @@ static void i2c_task(void* arg) {
 
     ESP_ERROR_CHECK(mcp23008_init(DEVICE_MASTER_NUM, MCP23008_BASE_ADDR, 0x10));
 
-    while(1) {
+    mcp23008_write_output(0x00);
 
+    while(1) {
+        mcp23008_write_output((1 << 0));
+        vTaskDelay(1000 / portTICK_RATE_MS);
+        mcp23008_write_output((1 << 1));
+        vTaskDelay(1000 / portTICK_RATE_MS);
+        mcp23008_write_output((1 << 2));
+        vTaskDelay(1000 / portTICK_RATE_MS);
     }
 
     i2c_driver_delete(DEVICE_MASTER_NUM);
