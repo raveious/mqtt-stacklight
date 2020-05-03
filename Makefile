@@ -3,6 +3,6 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := mqtt-stacklight
+PROJECT_NAME := mqtt_stacklight
 
 include $(IDF_PATH)/make/project.mk
